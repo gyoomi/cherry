@@ -4,7 +4,7 @@
  * All Rights Reserved.
  */
 
-package cn.cherry.spring;
+package cn.cherry.spring.bean;
 
 import java.io.Serializable;
 
