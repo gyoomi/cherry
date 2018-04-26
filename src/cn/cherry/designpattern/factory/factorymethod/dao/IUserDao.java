@@ -6,7 +6,7 @@
 
 package cn.cherry.designpattern.factory.factorymethod.dao;
 
-import cn.cherry.spring.User;
+import cn.cherry.spring.bean.User;
 
 /**
  * IUserDao Interface
