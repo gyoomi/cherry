@@ -54,4 +54,14 @@ public class Dept implements Serializable {
     public void setNodeNum(String nodeNum) {
         this.nodeNum = nodeNum;
     }
+
+    @Override
+    public String toString() {
+        return "Dept{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", parentId='" + parentId + '\'' +
+                ", nodeNum='" + nodeNum + '\'' +
+                '}';
+    }
 }
