@@ -12,11 +12,11 @@ package cn.cherry.se.d_thread;
  * @author Leon
  * @version 2018/4/25 17:04
  */
-public class Client {
+public class Client01 {
     public static void main(String[] args) {
-        Thread01 t1 = new Thread01();
+        Thread01_00 t1 = new Thread01_00();
         t1.start();
-        Thread02 t2 = new Thread02();
+        Thread02_00 t2 = new Thread02_00();
         Thread t001  = new Thread(t2);
         t001.start();
     }

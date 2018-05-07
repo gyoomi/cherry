@@ -12,13 +12,13 @@ package cn.cherry.se.d_thread;
  * @author Leon
  * @version 2018/4/25 17:04
  */
-public class Thread01 extends Thread{
+public class Thread01_00 extends Thread{
 
 
     @Override
     public void run() {
         for (int i = 0; i < 10; i++) {
-            System.out.println(Thread.currentThread().getName() + " is running...");
+            System.out.println(Thread.currentThread().getName() + " is running..." + this);
         }
     }
 }
