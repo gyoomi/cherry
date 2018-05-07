@@ -24,7 +24,7 @@ public class Thread14_00Domain {
         }
     }
 
-    public void methodB(){
+    public synchronized void methodB(){
         try {
             System.out.println("methodB Start... ThreadName = " + Thread.currentThread().getName());
             Thread.sleep(4_000);
