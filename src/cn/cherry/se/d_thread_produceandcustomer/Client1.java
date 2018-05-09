@@ -18,12 +18,9 @@ public class Client1 {
         Object lock = new Object();
         Producer producer = new Producer(lock);
         Customer customer = new Customer(lock);
-        Runnable rn1 = new Runnable() {
-            @Override
-            public void run() {
-                for (;;){
-                    producer.setValue();
-                }
+        Runnable rn1 = () -> {
+            for (;;){
+                producer.setValue();
             }
         };
         Runnable rn2 = () -> {
