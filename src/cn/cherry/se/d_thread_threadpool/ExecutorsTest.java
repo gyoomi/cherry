@@ -8,6 +8,8 @@ package cn.cherry.se.d_thread_threadpool;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 类功能描述
@@ -18,11 +20,27 @@ import java.util.concurrent.Executors;
 public class ExecutorsTest {
 
     public static void main(String[] args) {
-
-
-        
+        testScheduledThread();
     }
 
+    public static void testScheduledThread() {
+        ScheduledExecutorService service = Executors.newScheduledThreadPool(10);
+            // 表示延迟3秒执行
+            service.schedule(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("0000");
+                }
+            }, 3, TimeUnit.SECONDS);
+
+            // 表示延迟1秒后每3秒执行一次
+            service.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("AAAA");
+                }
+            }, 1, 3,TimeUnit.SECONDS);
+    }
     /**
      * 无界线程池
      * 无界线程池，意思是不管多少任务提交进来，都直接运行。无界线程池采用了SynchronousQueue，采用这个线程池就没有workQueue容量一说了，只要添加进去的线程就会被拿去用。
