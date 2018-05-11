@@ -25,7 +25,7 @@ import java.util.TimerTask;
  */
 public class TImer01_00 {
 
-    private static Timer timer = new Timer(true);
+    private static Timer timer = new Timer();
 
     static class MyTask extends TimerTask {
 
@@ -36,11 +36,34 @@ public class TImer01_00 {
     }
 
     public static void main(String[] args) {
+        test02();
+    }
+
+    /**
+     * 该方法的作用是在指定的日期之后，按指定的间隔周期性地无限循环地执行某一人物
+     *
+     */
+    public static void test02() {
         try {
-            Date toExecuteDate = DateUtils.parseDate("2018-05-10 17:24:00", "yyyy-MM-dd HH:mm:ss");
+            Date toExecuteDate = DateUtils.parseDate("2018-05-11 09:24:00", "yyyy-MM-dd HH:mm:ss");
             MyTask task = new MyTask();
-            System.out.println("计划时间：2018-05-10 17:24:00， 当前日期：" + new Date().toLocaleString());
-            timer.schedule(task,toExecuteDate);
+            System.out.println("计划时间：2018-05-11 09:24:00， 当前日期：" + new Date().toLocaleString());
+            timer.schedule(task, toExecuteDate, 4000);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *  该方法的作用是在指定的日期之后，执行任务
+     *
+     */
+    public static void test01() {
+        try {
+            Date toExecuteDate = DateUtils.parseDate("2018-05-11 09:22:00", "yyyy-MM-dd HH:mm:ss");
+            MyTask task = new MyTask();
+            System.out.println("计划时间：2018-05-11 09:22:00， 当前日期：" + new Date().toLocaleString());
+            timer.schedule(task, toExecuteDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
