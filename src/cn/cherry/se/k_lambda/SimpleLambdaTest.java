@@ -14,6 +14,14 @@ package cn.cherry.se.k_lambda;
  */
 public class SimpleLambdaTest {
     public static void main(String[] args) {
+        test01();
+    }
+
+    /**
+     * show anonymous function
+     *
+     */
+    public static void test01() {
         Runnable r1 = () -> System.out.println("hello lambda");
         r1.run();
     }
