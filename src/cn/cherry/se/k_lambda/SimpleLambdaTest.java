@@ -18,7 +18,7 @@ public class SimpleLambdaTest {
     }
 
     /**
-     * show anonymous function
+     * show anonymous function how to use
      *
      */
     public static void test01() {
