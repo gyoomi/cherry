@@ -6,8 +6,6 @@
 
 package cn.cherry.se.l_io_inputstream;
 
-import com.sun.org.apache.xpath.internal.operations.String;
-
 import java.io.*;
 
 /**
@@ -27,9 +25,10 @@ public class FileInputStreamTest {
             File file = new File("D:\\1.txt");
             int length = (int) file.length();
             InputStream in = new FileInputStream(file);
-            byte[] bArr = new byte[length];
-            int read = in.read(bArr);
-            System.out.println(new String());
+            int len;
+            while ((len = in.read()) != -1) {
+                System.out.print((char)len);
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
