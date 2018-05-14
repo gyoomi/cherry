@@ -30,7 +30,13 @@ public class InputStreamTest {
         String str = "Hello World!哈";
         byte[] bytes = str.getBytes();
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-
+        try {
+            OutputStream out = new FileOutputStream("D:\\11.txt");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+        }
         int result;
         while ((result = bais.read()) != -1) {
             System.out.print((char)result);
