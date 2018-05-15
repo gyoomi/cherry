@@ -17,18 +17,21 @@ import java.io.*;
  */
 public class InputStreamTest {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         test04();
 
     }
 
+    public static void test05() {
+
+    }
     /**
      * ByteArrayInputStream，主要是应对流的来源和目的地不一定是文件这种情况，比如说可能是内存，可能是数组。
      *
      */
-    public static void test04() {
+    public static void test04() throws IOException {
         String str = "Hello World!哈";
-        byte[] bytes = str.getBytes();
+        byte[] bytes = str.getBytes("utf-8");
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         try {
             OutputStream out = new FileOutputStream("D:\\11.txt");
@@ -37,9 +40,10 @@ public class InputStreamTest {
             e.printStackTrace();
         } finally {
         }
-        int result;
-        while ((result = bais.read()) != -1) {
-            System.out.print((char)result);
+        int len = 0;
+        byte[] b = new byte[3];
+        while ((len = bais.read(b)) != -1) {
+            System.out.print(new String(b, 0, len));
         }
         try {
             bais.close();
