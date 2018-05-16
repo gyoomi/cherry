@@ -6,7 +6,6 @@
 
 package cn.cherry.se.l_io_inputstream;
 
-
 import javax.sound.sampled.*;
 import java.io.*;
 /**
@@ -18,12 +17,32 @@ import java.io.*;
 public class InputStreamTest {
 
     public static void main(String[] args) throws Exception {
-        test04();
+        test05();
+    }
+
+    public static void test06() {
 
     }
 
+    /**
+     * 先有DataOutputStream将数据写入目的地中、才能使用DataInputStream将数据读取到程序中并转换成对应java基础类型。
+     *
+     *
+     */
     public static void test05() {
-
+        try {
+            InputStream in = new FileInputStream("D:\\1.txt");
+            DataInputStream dis = new DataInputStream(in);
+            int available = dis.available();
+            byte[] b = new byte[available];
+            dis.readFully(b);
+            System.out.println(new String(b));
+            dis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     /**
      * ByteArrayInputStream，主要是应对流的来源和目的地不一定是文件这种情况，比如说可能是内存，可能是数组。
