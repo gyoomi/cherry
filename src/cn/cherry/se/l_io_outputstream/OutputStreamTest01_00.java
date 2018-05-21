@@ -17,9 +17,72 @@ import java.io.*;
 public class OutputStreamTest01_00 {
 
     public static void main(String[] args) {
-        test02();
+        test05();
     }
 
+
+    /**
+     * BufferedOutputStream：默认缓冲数组为8kb（8192byte）
+     * 1.当缓冲区满的时候会写
+     * 2.调用flush（）方法
+     *
+     */
+    public static void test05() {
+        try {
+            OutputStream out = new FileOutputStream("D:\\1.txt");
+            BufferedOutputStream bos = new BufferedOutputStream(out);
+            for (int i = 0; i < 8193; i++) {
+                bos.write(97);
+            }
+            System.out.println("over");
+            bos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 字节数组复制文件经典写法
+     *
+     */
+    public static void test04() {
+        try {
+            InputStream in = new FileInputStream("D:\\FeiQ.exe");
+            OutputStream out = new FileOutputStream("D:\\111.exe");
+            byte[] b = new byte[2048];
+            int len;
+            while ((len = in.read(b)) != -1) {
+                out.write(b, 0, len);
+            }
+            System.out.println("copy over!!!");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 单字节复制文件的经典写法
+     *
+     */
+    public static void test03() {
+        try {
+            InputStream in = new FileInputStream("D:\\FeiQ.exe");
+            OutputStream out = new FileOutputStream("D:\\1.exe");
+            int len;
+            while ((len = in.read()) != -1) {
+                out.write(len);
+            }
+            System.out.println("copy over!!!");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 写：字符->字节
      *
