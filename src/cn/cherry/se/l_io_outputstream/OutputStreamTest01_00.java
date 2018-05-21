@@ -17,9 +17,32 @@ import java.io.*;
 public class OutputStreamTest01_00 {
 
     public static void main(String[] args) {
-        test05();
+        test06();
     }
 
+    /**
+     *
+     *
+     */
+    public static void test06() {
+        try {
+            InputStream in = new FileInputStream("D:\\1.txt");
+            BufferedInputStream bis = new BufferedInputStream(in);
+            int len;
+            int c = 0;
+            while ((len = bis.read()) != -1) {
+                System.out.println(len);
+                c++;
+            }
+            System.out.println("over");
+            System.out.println(c);
+            bis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * BufferedOutputStream：默认缓冲数组为8kb（8192byte）
