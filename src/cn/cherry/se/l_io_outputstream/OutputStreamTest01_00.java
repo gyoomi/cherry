@@ -17,11 +17,13 @@ import java.io.*;
 public class OutputStreamTest01_00 {
 
     public static void main(String[] args) {
-        test06();
+
     }
 
     /**
-     *
+     * BufferedInputStream先读取比请求更多的数据到缓冲区，当调用read时如果数据已经在缓存区，则直接返回对应数据不做IO操作，
+     * 否则去读取新的数据到缓冲区(通常比请求的数据要多)
+     * 优点：半阻塞式，大部分情况下能大幅度提高处理速度
      *
      */
     public static void test06() {
@@ -29,13 +31,10 @@ public class OutputStreamTest01_00 {
             InputStream in = new FileInputStream("D:\\1.txt");
             BufferedInputStream bis = new BufferedInputStream(in);
             int len;
-            int c = 0;
             while ((len = bis.read()) != -1) {
                 System.out.println(len);
-                c++;
             }
             System.out.println("over");
-            System.out.println(c);
             bis.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
