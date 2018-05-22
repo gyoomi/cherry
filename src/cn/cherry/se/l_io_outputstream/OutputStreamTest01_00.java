@@ -17,9 +17,56 @@ import java.io.*;
 public class OutputStreamTest01_00 {
 
     public static void main(String[] args) {
+        test07();
+
+
+
 
     }
 
+    /**
+     * DataInputStream
+     *
+     *
+     */
+    public static void test08() {
+        try {
+            InputStream in = new FileInputStream("D:\\2.txt");
+            DataInputStream dis = new DataInputStream(in);
+     /*       boolean b = dis.readBoolean();
+            System.out.println(b);
+            float f = dis.readFloat();
+            System.out.println(f);*/
+            String s = dis.readUTF();
+            System.out.println(s);
+            dis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 1.要先有DataOutputStream将数据写入目的地中、才能使用DataInputStream将数据读取到程序中并转换成对应java基础类型
+     *
+     *
+     */
+    public static void test07() {
+        try {
+            OutputStream out = new FileOutputStream("D:\\2.txt");
+            DataOutputStream dos = new DataOutputStream(out);
+            dos.writeBoolean(true);
+            dos.writeFloat(4.33F);
+            dos.writeUTF("哈哈哈");
+            dos.close();
+            System.out.println("over");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * BufferedInputStream先读取比请求更多的数据到缓冲区，当调用read时如果数据已经在缓存区，则直接返回对应数据不做IO操作，
      * 否则去读取新的数据到缓冲区(通常比请求的数据要多)
