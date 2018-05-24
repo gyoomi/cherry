@@ -17,13 +17,27 @@ import java.io.*;
 public class OutputStreamTest01_00 {
 
     public static void main(String[] args) {
-        test07();
-
+        test09();
 
 
 
     }
 
+    /**
+     * PrintWriter的使用
+     *
+     */
+    public static void test09() {
+        try {
+            PrintWriter pw = new PrintWriter(new FileWriter("D:\\1.txt"));
+            pw.print("Jerry");
+            pw.print(' ');
+            pw.print(99990);
+            pw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * DataInputStream
      *
