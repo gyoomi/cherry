@@ -1,0 +1,4 @@
+- 总结  
+ ObjectOutputStream、ObjectInputStream这对流本质上就是操作序列化对象、用于在介质间进行传递序列化对象的属性、
+ 当然、当我们想要保存对象的某个属性的时候可以使用DataOutputStream、DataInputStream这对流、但是当我们要保存的属性恰好组成了一个对象、并且这个对象还有版本、作者等信息时、DataOutputStream这对流就不能满足我们了、
+ 其实如上面所说、ObjectInputStream这对流也是间接实现了DataOutputStream这对流的接口、并且中间穿插了一个ObjectOut这对接口、这对接口对DataOut这对进行了扩展、满足传输对象、数组、字符串。
