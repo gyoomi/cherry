@@ -17,8 +17,8 @@ import java.io.*;
 public class Test {
 
     public static void main(String[] args) {
-        // write();
-        read();
+        write();
+        // read();
     }
 
     public static void write() {
@@ -28,7 +28,8 @@ public class Test {
             // dos.writeByte(126);
             // dos.writeShort(1300);
             // dos.writeInt(9999);
-            dos.writeLong(1000000L);
+            // dos.writeLong(1000000L);
+            dos.writeBoolean(true);
             dos.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
