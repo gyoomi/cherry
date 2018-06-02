@@ -29,7 +29,10 @@ public class Test {
             // dos.writeShort(1300);
             // dos.writeInt(9999);
             // dos.writeLong(1000000L);
-            dos.writeBoolean(true);
+            // dos.writeBoolean(true);
+            // dos.writeChars("哈哈");
+            // dos.writeChar('哈');
+            dos.writeUTF("我是天才！");
             dos.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -42,9 +45,12 @@ public class Test {
         try {
             DataInputStream dis = new DataInputStream(new FileInputStream("d:\\1.txt"));
             // short s = dis.readShort();
-            long l = dis.readLong();
+            // long l = dis.readLong();
+            char c = dis.readChar();
+            char c2 = dis.readChar();
             dis.close();
-            System.out.println(l);
+            System.out.println(c);
+            System.out.println(c2);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
