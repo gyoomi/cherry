@@ -22,7 +22,7 @@ import java.util.zip.ZipOutputStream;
 public class Demo00_out {
 
     public static void main(String[] args) throws Exception {
-        zipMultiFile("D:\\jar", "D:\\jar-test.zip", false);
+        zipMultiFile("D:\\solr", "D:\\solr.zip", true);
         System.out.println("over");
     }
 
