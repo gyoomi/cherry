@@ -7,6 +7,8 @@
 package cn.cherry.se.l_io_zipoutputinputstream;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
@@ -24,38 +26,41 @@ public class Demo01_in {
     }
 
     public static void in05() throws Exception {
+        ArrayList<String> allFileName = new ArrayList<String>();
         File file = new File("d:\\test.zip");
         File outFile = null;
         ZipFile zipFile = new ZipFile(file);
         ZipEntry entry = null;
         ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(file));
 
-        InputStream in = null;
-        OutputStream out = null;
-        while ((entry = zipInputStream.getNextEntry()) != null) {
-            outFile = new File("d:\\" + entry.getName());
-
-                if (!outFile.getParentFile().exists()) {
-                    outFile.getParentFile().mkdir();
+        Enumeration<? extends ZipEntry> entries = zipFile.entries();
+        while (entries.hasMoreElements()) {
+            entry = entries.nextElement();
+            File zFile = new File("d:\\" + entry.getName());
+            File fPath = new File(zFile.getParentFile().getPath());
+            if (entry.isDirectory()) {
+                if (!zFile.exists()) {
+                    zFile.mkdirs();
                 }
-
-                if (!outFile.exists()) {
-                    outFile.createNewFile();
+                zipInputStream.closeEntry();
+            } else {
+                if (!fPath.exists()) {
+                    fPath.mkdirs();
                 }
-
-            in = zipFile.getInputStream(entry);
-            out = new FileOutputStream(outFile);
-            int len;
-            while ((len = in.read()) != -1) {
-                out.write(len);
+                FileOutputStream fos = new FileOutputStream(zFile);
+                int len;
+                allFileName.add(zFile.getAbsolutePath());
+                while ((len = zipInputStream.read()) != -1) {
+                    fos.write(len);
+                }
+                fos.close();
+                zipInputStream.closeEntry();
             }
-            in.close();
-            out.close();
         }
 
         zipInputStream.close();
         System.out.println("over");
-
+        System.out.println(allFileName);
     }
 
     public static void in04() throws Exception {
