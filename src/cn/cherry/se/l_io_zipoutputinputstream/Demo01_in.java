@@ -26,7 +26,7 @@ public class Demo01_in {
     }
 
     public static void in05() throws Exception {
-        ArrayList<String> allFileName = new ArrayList<String>();
+        ArrayList<String> allFileName = new ArrayList<>();
         File file = new File("d:\\test.zip");
         File outFile = null;
         ZipFile zipFile = new ZipFile(file);
