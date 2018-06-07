@@ -14,4 +14,9 @@ package cn.cherry.se.l_io_writerreader;
  */
 public class Test {
 
+    public static void main(String[] args) {
+
+    }
+
+
 }
