@@ -25,9 +25,13 @@ public class TimeServer {
             server = new ServerSocket(port);
             System.out.println("The time server start in port：" + port);
             Socket socket = null;
+            // 创建I/O任务线程池
+            TimeServerHandlerExecutePool singleExectorPool = new TimeServerHandlerExecutePool(50, 1000);
             while (true) {
                 socket = server.accept();
-                new Thread(new TimeServerHandlerTest(socket)).start();
+                // new Thread(new TimeServerHandlerTest(socket)).start();
+                // 删除原来的代码块
+                singleExectorPool.execute(new TimeServerHandlerTest(socket));
             }
         } catch (IOException e) {
             e.printStackTrace();
