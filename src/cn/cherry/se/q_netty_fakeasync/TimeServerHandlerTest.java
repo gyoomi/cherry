@@ -17,13 +17,13 @@ import java.util.Date;
  * 类功能描述
  *
  * @author Leon
- * @version 2018/6/27 17:42
+ * @version 2018/6/28 9:48
  */
-public class TimeServerHandler implements Runnable{
+public class TimeServerHandlerTest implements Runnable{
 
     private Socket socket;
 
-    public TimeServerHandler(Socket socket) {
+    public TimeServerHandlerTest(Socket socket) {
         this.socket = socket;
     }
 
@@ -34,38 +34,40 @@ public class TimeServerHandler implements Runnable{
         PrintWriter out = null;
         try {
             in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-            out = new PrintWriter(this.socket.getOutputStream());
-            String currentTime = null;
+            // 一定要设置自动刷新缓冲区，这是一个坑
+            out = new PrintWriter(this.socket.getOutputStream(), true);
             String body = null;
+            String currentTime = null;
             while (true) {
                 body = in.readLine();
                 if (body == null) {
                     break;
                 }
-                System.out.println("The server receive body is：" + body);
-                currentTime = "QUERY TIME ORDER".equalsIgnoreCase(body) ? new Date(System.currentTimeMillis()).toString() : "BAD BODY";
+                System.out.println("The time server received message：" + body);
+                currentTime = "query time order".equalsIgnoreCase(body) ? new Date(System.currentTimeMillis()).toString() : "bad order";
                 out.println(currentTime);
             }
         } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (out != null) {
-                out.close();
-            }
             if (in != null) {
                 try {
                     in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
                 }
             }
-            if (socket != null) {
-                try {
-                    socket.close();
-                } catch (IOException e) {
 
+            if (out != null) {
+                out.close();
+                out = null;
+            }
+
+            if (this.socket != null) {
+                try {
+                    this.socket.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
                 }
-                socket = null;
+                this.socket = null;
             }
         }
     }

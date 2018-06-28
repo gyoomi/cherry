@@ -14,15 +14,12 @@ import java.net.Socket;
  * 类功能描述
  *
  * @author Leon
- * @version 2018/6/27 17:33
+ * @version 2018/6/28 9:45
  */
 public class TimeServer {
 
     public static void main(String[] args) {
-        int port = 8090;
-        if (args != null && args.length > 0) {
-            port = Integer.valueOf(args[0]);
-        }
+        int port = 9999;
         ServerSocket server = null;
         try {
             server = new ServerSocket(port);
@@ -30,13 +27,14 @@ public class TimeServer {
             Socket socket = null;
             while (true) {
                 socket = server.accept();
-                new Thread(new TimeServerHandler(socket)).start();
+                new Thread(new TimeServerHandlerTest(socket)).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
+            // 所有的流必须要有正确关闭的方法，不然会出问题
             if (server != null) {
-                System.out.println("The time server is close");
+                System.out.println("The time server closedd");
                 try {
                     server.close();
                 } catch (IOException e) {
@@ -45,6 +43,5 @@ public class TimeServer {
                 server = null;
             }
         }
-
     }
 }

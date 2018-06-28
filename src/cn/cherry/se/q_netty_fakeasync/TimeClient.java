@@ -16,26 +16,24 @@ import java.net.Socket;
  * 类功能描述
  *
  * @author Leon
- * @version 2018/6/27 17:54
+ * @version 2018/6/28 9:58
  */
 public class TimeClient {
 
     public static void main(String[] args) {
-        int port = 8090;
-        if (args != null && args.length > 0) {
-            port = Integer.valueOf(args[0]);
-        }
+        int port = 9999;
         BufferedReader in = null;
         PrintWriter out = null;
         Socket socket = null;
         try {
             socket = new Socket("127.0.0.1", port);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            // 一定要设置自动刷新缓冲区
             out = new PrintWriter(socket.getOutputStream(), true);
-            out.print("QUERY TIME ORDER");
-            System.out.println("The client send time order successful");
-            String resp = in.readLine();
-            System.out.println("Now is：" + resp);
+            out.println("query time order");
+            System.out.println("The client send order successful");
+            String rs = in.readLine();
+            System.out.println("Now is ：" + rs);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -51,9 +49,11 @@ public class TimeClient {
             }
             if (socket != null) {
                 try {
+                    // 先关闭
                     socket.close();
                 } catch (IOException e) {
                 }
+                // 置空
                 socket = null;
             }
         }
