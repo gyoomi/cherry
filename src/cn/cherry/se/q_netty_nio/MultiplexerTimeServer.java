@@ -27,7 +27,7 @@ public class MultiplexerTimeServer implements Runnable {
 
     private Selector selector;
 
-    private ServerSocketChannel serverChannle;
+    private ServerSocketChannel serverChannel;
 
     private volatile boolean stop;
 
@@ -39,10 +39,10 @@ public class MultiplexerTimeServer implements Runnable {
     public MultiplexerTimeServer(int port) {
         try {
             selector = Selector.open();
-            serverChannle = ServerSocketChannel.open();
-            serverChannle.configureBlocking(false);
-            serverChannle.socket().bind(new InetSocketAddress(port), 1024);
-            serverChannle.register(selector, SelectionKey.OP_ACCEPT);
+            serverChannel = ServerSocketChannel.open();
+            serverChannel.configureBlocking(false);
+            serverChannel.socket().bind(new InetSocketAddress(port), 1024);
+            serverChannel.register(selector, SelectionKey.OP_ACCEPT);
             System.out.println("The time server start in port：" + port);
 
         } catch (IOException e) {
@@ -54,6 +54,7 @@ public class MultiplexerTimeServer implements Runnable {
     public void stop() {
         this.stop = true;
     }
+
     @Override
     public void run() {
         while (!stop) {
@@ -65,10 +66,26 @@ public class MultiplexerTimeServer implements Runnable {
                 while (it.hasNext()) {
                     key = it.next();
                     it.remove();
-                    // TODO
+                    try {
+                        handleInput(key);
+                    } catch (IOException e) {
+                        if (key != null) {
+                            key.cancel();
+                            if (key.channel() != null) {
+                                key.channel().close();
+                            }
+                        }
+                    }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                // 多路复用器关闭后，所有注册在其上的Channel和Pipe等资源都会被自动注册并且关闭，所以不需要重复释放资源
+                if (selector != null) {
+                    try {
+                        selector.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
             }
         }
     }
@@ -95,9 +112,28 @@ public class MultiplexerTimeServer implements Runnable {
                     String body = new String(bytes, "UTF-8");
                     System.out.println("The time server receive order ：" + body);
                     String currentTime = "query time order".equalsIgnoreCase(body) ? new Date(System.currentTimeMillis()).toString() : "bad order";
-                    // todo
+                    doWrite(sc, currentTime);
+                } else if (read < 0) {
+                    // 对端链路关闭
+                    key.cancel();
+                    sc.close();
+                } else {
+                    // 读到0字节，忽略
+                    ;
                 }
             }
+        }
+    }
+
+    public void doWrite(SocketChannel sc,String response) throws IOException {
+        if (response != null && response.trim().length() > 0) {
+            byte[] bytes = response.getBytes();
+            ByteBuffer buffer = ByteBuffer.allocate(bytes.length);
+            buffer.put(bytes);
+            buffer.flip();
+            // 这里可能存在“半写包”问题
+            // 解决思路：注册写事件，不断轮训Selector，通过hasRemaining方法，做到把数据写完
+            sc.write(buffer);
         }
     }
 }
