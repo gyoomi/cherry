@@ -48,6 +48,8 @@ public class TimeClientHandle implements Runnable {
 
     @Override
     public void run() {
+        // If connect successful,do it
+        // It will not connect again
         try {
             doConnect();
         } catch (IOException e) {
@@ -55,6 +57,7 @@ public class TimeClientHandle implements Runnable {
             System.exit(1);
         }
 
+        // If connect failed, it will select all the time
         while (!stop) {
             try {
                 selector.select(1000);
@@ -63,7 +66,27 @@ public class TimeClientHandle implements Runnable {
                 while (it.hasNext()) {
                     key = it.next();
                     it.remove();
+                    try  {
+                        handleInput(key);
+                    } catch (Exception e) {
+                        if (key != null) {
+                            key.cancel();
+                            if (key.channel() != null) {
+                                key.channel().close();
+                            }
+                        }
+                    }
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
+
+        // Close the selector
+        if (selector != null) {
+            try {
+                selector.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -94,6 +117,13 @@ public class TimeClientHandle implements Runnable {
                     String body = new String(bytes, "UTF-8");
                     System.out.println("Now is：" + body);
                     this.stop = true;
+                } else if (read < 0) {
+                    // 链路关闭
+                    key.cancel();
+                    sc.close();
+                } else {
+                    // 读到0字节，忽略
+                    ;
                 }
             }
         }
@@ -112,6 +142,7 @@ public class TimeClientHandle implements Runnable {
     }
 
     public void doWrite(SocketChannel sc) throws IOException {
+        // 存在半写包问题，需要优化
         byte[] req = "query time order".getBytes();
         ByteBuffer buffer = ByteBuffer.allocate(req.length);
         buffer.put(req);
