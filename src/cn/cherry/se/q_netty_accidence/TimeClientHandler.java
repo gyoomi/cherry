@@ -30,16 +30,20 @@ public class TimeClientHandler extends ChannelHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        super.channelActive(ctx);
+        ctx.writeAndFlush(firstMessage);
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        super.channelRead(ctx, msg);
+        ByteBuf buf = (ByteBuf) msg;
+        byte[] resp = new byte[buf.readableBytes()];
+        buf.readBytes(resp);
+        String body = new String(resp, "UTF-8");
+        System.out.println("Now is: " + body);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        super.exceptionCaught(ctx, cause);
+        ctx.close();
     }
 }
