@@ -58,7 +58,7 @@ public class EchoClient {
 
 
     public static void main(String[] args) throws Exception {
-        new EchoClient("localhost", 8090, 1).run();
+        new EchoClient("127.0.0.1", 8090, 1000).run();
     }
 
 }
