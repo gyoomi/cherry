@@ -1,0 +1,3 @@
+- Google Protobuf
+- Facebook Thrift
+- Marshalling
