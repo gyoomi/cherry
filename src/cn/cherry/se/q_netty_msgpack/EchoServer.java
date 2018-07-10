@@ -39,6 +39,11 @@ public class EchoServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
+                            /* maxFrameLength 解码时，处理每个帧数据的最大长度 */
+                            /* lengthFieldOffset   该帧数据中，存放该帧数据的长度的数据的起始位置 */
+                            /* lengthFieldLength   记录该帧数据长度的字段本身的长度 */
+                            /* lengthAdjustment    修改帧数据长度字段中定义的值，可以为负数 */
+                            /* initialBytesToStrip 解析的时候需要跳过的字节数 */
                             ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65535, 0, 2,0, 2));
                             ch.pipeline().addLast("msg MessageDecoder", new MsgpackDecoder());
                             ch.pipeline().addLast("frameEncoder", new LengthFieldPrepender(2));
