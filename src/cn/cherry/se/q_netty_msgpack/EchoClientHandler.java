@@ -33,8 +33,8 @@ public class EchoClientHandler extends ChannelHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println("Client receive the msg " + msg);
-        ctx.write(msg);
+        System.out.println("Client receive the msg: " + msg);
+        // ctx.write(msg);
     }
 
     private UserInfo[] userInfo() {

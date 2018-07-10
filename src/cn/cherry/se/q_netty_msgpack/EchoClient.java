@@ -14,6 +14,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 
 /**
  * 类功能描述
@@ -44,7 +46,9 @@ public class EchoClient {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
+                            ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
                             ch.pipeline().addLast("msgpack MsgpackDecoder", new MsgpackDecoder());
+                            ch.pipeline().addLast("frameEncoder", new LengthFieldPrepender(2));
                             ch.pipeline().addLast("msgpack MsgpackEncoder", new MsgpackEncoder());
                             ch.pipeline().addLast(new EchoClientHandler(sendNumber));
                         }
@@ -58,7 +62,7 @@ public class EchoClient {
 
 
     public static void main(String[] args) throws Exception {
-        new EchoClient("127.0.0.1", 8090, 1000).run();
+        new EchoClient("127.0.0.1", 8090, 300).run();
     }
 
 }
