@@ -37,11 +37,15 @@ public class HttpFileServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
+                            // Http请求消息解析器
                             ch.pipeline().addLast("http decoder", new HttpRequestDecoder());
+                            // 将多个消息转为单个的FullHttpRequest/FullHttpResponse,原因是HTTP解码器在每个消息中生成多个消息对象
                             ch.pipeline().addLast("http aggregator", new HttpObjectAggregator(65536));
+                            // 对相应消息进行编码
                             ch.pipeline().addLast("http encoder", new HttpResponseEncoder());
+                            // 主要作用是支持异步发送的大码流（如大的文件传输），但是不占用过多的内存,防止内存溢出
                             ch.pipeline().addLast("http chucked", new ChunkedWriteHandler());
-                            ch.pipeline().addLast("fileServerHandler", null);
+                            ch.pipeline().addLast("fileServerHandler", new HttpFileServerHandler(url));
                         }
                     });
             ChannelFuture f = b.bind("localhost", port).sync();
@@ -51,6 +55,9 @@ public class HttpFileServer {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
+    }
 
+    public static void main(String[] args) throws Exception {
+        new HttpFileServer().run(DEFAULT_URL, 8090);
     }
 }
