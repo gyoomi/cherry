@@ -6,6 +6,8 @@
 
 package cn.cherry.se.k_stream;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -31,6 +33,19 @@ public class StreamDemo04 {
         // limit主要用于无限流
         System.out.println("--------limit------------");
         new Random().ints().filter(i -> i > 100 && i <1000).limit(6).forEach(System.out::println);
-
+        // reduce的使用，主要用于聚合
+        List<Integer> ints = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8);
+        Integer totalSum = ints.stream().reduce((sum, item) -> sum + item).get();
+        System.out.println("计算求和为： " + totalSum);
+        // allMatch -> 是不是Stream中的所有元素都满足给定的匹配条件
+        // anyMatch -> Stream中是否存在任何一个元素满足匹配条件
+        // findFirst -> 返回Stream中的第一个元素，如果Stream为空，返回空Optional
+        // noneMatch -> 是不是Stream中的所有元素都不满足给定的匹配条件
+        // ax和min -> 使用给定的比较器（Operator），返回Stream中的最大|最小值
+        System.out.println("------allMatch-----");
+        List<Integer> ints2 = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+        System.out.println(ints2.stream().allMatch(item -> item > 10));
+        System.out.println(ints2.stream().anyMatch(item -> item > 10));
+        System.out.println("最大值是： " + ints2.stream().max((x1, x2) -> x2 - x1).get());
     }
 }
